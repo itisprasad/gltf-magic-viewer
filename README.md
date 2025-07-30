@@ -1,73 +1,241 @@
-# Welcome to your Lovable project
+# 3D Model Viewer
 
-## Project info
+A modern, web-based 3D model viewer built with React, Three.js, and React Three Fiber. Upload and interact with .glb and .gltf 3D models with a professional interface and comprehensive viewing controls.
 
-**URL**: https://lovable.dev/projects/d394b87d-3d89-47d9-b3a0-963f3bb8ddd1
+![3D Model Viewer](https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop&crop=center)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 🎯 **Drag & Drop Upload**: Simply drag .glb/.gltf files into the viewer
+- 🔄 **Interactive Controls**: Rotate, pan, and zoom with mouse/touch
+- 🎨 **Visual Options**: Toggle wireframe mode and switch environments
+- 📊 **Model Information**: View file details and format information
+- 🌍 **Environment Lighting**: Multiple preset environments for optimal viewing
+- 📱 **Responsive Design**: Works on desktop, tablet, and mobile devices
+- ⚡ **WebGL Accelerated**: Hardware-accelerated 3D rendering
+- 🎭 **Professional UI**: Dark theme optimized for 3D content viewing
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d394b87d-3d89-47d9-b3a0-963f3bb8ddd1) and start prompting.
+- **Frontend**: React 18 + TypeScript
+- **3D Engine**: Three.js + React Three Fiber
+- **3D Utilities**: React Three Drei
+- **UI Components**: shadcn/ui + Radix UI
+- **Styling**: Tailwind CSS
+- **Build Tool**: Vite
+- **File Handling**: react-dropzone
 
-Changes made via Lovable will be committed automatically to this repo.
+## Quick Start
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ 
+- npm or yarn package manager
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd 3d-model-viewer
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. **Open in browser**
+   ```
+   http://localhost:8080
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Usage Guide
+
+### Uploading Models
+
+1. **Drag & Drop**: Drag a .glb or .gltf file directly onto the upload area
+2. **File Browser**: Click "Choose File" to browse and select a model
+3. **Supported Formats**: .glb (binary) and .gltf (JSON) files
+
+### Viewer Controls
+
+#### Mouse Controls
+- **Left Click + Drag**: Rotate the model around its center
+- **Right Click + Drag**: Pan the camera view
+- **Scroll Wheel**: Zoom in and out
+- **Reset Camera**: Click the "Reset Camera" button to return to default view
+
+#### Viewer Options
+- **Wireframe Mode**: Toggle between solid and wireframe rendering
+- **Environment**: Choose from 10 different lighting environments
+- **Model Info**: View file name, size, and format details
+
+### Keyboard Shortcuts
+- **Escape**: Clear current model
+- **Space**: Reset camera to default position
+
+## Deployment
+
+### Development Build
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Production Build
+```bash
+npm run build
+npm run preview
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Deploy to Static Hosting
 
-**Use GitHub Codespaces**
+1. **Build the project**
+   ```bash
+   npm run build
+   ```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. **Deploy the `dist` folder** to your hosting service:
+   - Netlify: Drag the `dist` folder to Netlify deploy
+   - Vercel: Connect your GitHub repo for automatic deployment
+   - AWS S3: Upload `dist` contents to S3 bucket with static hosting
+   - GitHub Pages: Use GitHub Actions to deploy from the `dist` folder
 
-## What technologies are used for this project?
+### Deploy with Node.js Server
 
-This project is built with:
+1. **Install serve globally**
+   ```bash
+   npm install -g serve
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+2. **Build and serve**
+   ```bash
+   npm run build
+   serve -s dist -l 3000
+   ```
 
-## How can I deploy this project?
+3. **Using PM2 for production**
+   ```bash
+   npm install -g pm2
+   npm run build
+   pm2 serve dist 3000 --name "3d-viewer"
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/d394b87d-3d89-47d9-b3a0-963f3bb8ddd1) and click on Share -> Publish.
+### Docker Deployment
 
-## Can I connect a custom domain to my Lovable project?
+1. **Create Dockerfile**
+   ```dockerfile
+   FROM node:18-alpine
+   WORKDIR /app
+   COPY package*.json ./
+   RUN npm ci --only=production
+   COPY . .
+   RUN npm run build
+   EXPOSE 3000
+   CMD ["npx", "serve", "-s", "dist", "-l", "3000"]
+   ```
 
-Yes, you can!
+2. **Build and run**
+   ```bash
+   docker build -t 3d-viewer .
+   docker run -p 3000:3000 3d-viewer
+   ```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Project Structure
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+src/
+├── components/           # React components
+│   ├── ui/              # shadcn/ui components
+│   ├── ModelViewer.tsx  # 3D canvas and viewer logic
+│   ├── FileUpload.tsx   # File upload interface
+│   ├── ViewerControls.tsx # Control panel
+│   └── ModelInfo.tsx    # Model information display
+├── pages/
+│   ├── Index.tsx        # Main application page
+│   └── NotFound.tsx     # 404 error page
+├── lib/
+│   └── utils.ts         # Utility functions
+├── hooks/               # Custom React hooks
+├── index.css           # Global styles and design system
+└── main.tsx            # Application entry point
+```
+
+## Environment Variables
+
+No environment variables are required for basic functionality. All 3D rendering happens client-side.
+
+## Browser Support
+
+- **Chrome**: 90+
+- **Firefox**: 88+
+- **Safari**: 14+
+- **Edge**: 90+
+
+**Requirements**: WebGL 2.0 support is required for optimal performance.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Model not loading**
+   - Ensure file is valid .glb/.gltf format
+   - Check browser console for specific error messages
+   - Try a different model file to isolate the issue
+
+2. **Performance issues**
+   - Large models (>50MB) may load slowly
+   - Reduce model complexity or file size if needed
+   - Ensure hardware acceleration is enabled in browser
+
+3. **Controls not working**
+   - Check if WebGL is enabled in browser settings
+   - Try refreshing the page
+   - Ensure you're using a supported browser
+
+### File Format Support
+
+- **.glb**: Binary GLTF format (recommended for better performance)
+- **.gltf**: JSON GLTF format (larger file size but human-readable)
+
+### Performance Tips
+
+- Use .glb format for better loading performance
+- Optimize models before uploading (Blender, etc.)
+- Consider model complexity for web viewing
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -am 'Add feature'`
+4. Push to branch: `git push origin feature-name`
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- **Three.js**: The foundational 3D library
+- **React Three Fiber**: React renderer for Three.js
+- **React Three Drei**: Useful helpers and abstractions
+- **shadcn/ui**: Beautiful UI component library
+- **Radix UI**: Primitive components for accessibility
+
+## Support
+
+For issues and questions:
+1. Check the [Issues](../../issues) section
+2. Review the troubleshooting guide above
+3. Create a new issue with detailed information
+
+---
+
+**Built with ❤️ using React, Three.js, and modern web technologies**
